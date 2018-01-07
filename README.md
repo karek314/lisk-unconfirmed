@@ -1,6 +1,6 @@
 # lisk-unconfirmed
 
-As of pre lisk core 1.0.0
+As of pre lisk core 1.0.0<br>
 Needs to use modified Lisk core node
 <pre>
 bash lisk.sh stop
