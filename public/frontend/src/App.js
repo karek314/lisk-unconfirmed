@@ -11,26 +11,34 @@ class App extends Component {
     this.loadTransactions()
     setInterval(() => {
       this.loadTransactions()
-    }, 1000)
+    }, 1500)
   }
   loadTransactions = async () => {
     const res = await axios.get(
       //  'http://www.mocky.io/v2/5a5f83cc2e000080260a84ca'
-      'https://cors.now.sh/https://unconfirmed.liskstats.net/api/index.php'
+      'https://unconfirmed.liskstats.net/api/index.php'
     )
 
     if (res.data.transactions.length >= 0) {
-      const all = [...res.data.transactions, ...this.state.transactions]
-      const unique = all.filter(
-        (s1, pos, arr) => arr.findIndex(s2 => s2.id === s1.id) === pos
-      )
-
-      this.setState({
-        transactions: unique
-      })
-      console.log(res.data)
-      console.log(this.state)
+      const uniqueResultOne = res.data.transactions
+        .filter(
+          obj => !this.state.transactions.some(obj2 => obj.id === obj2.id)
+        )
+        .map(t => ({
+          ...t,
+          new: true
+        }))
+      if (uniqueResultOne.length >= 1) this.addNewTransactions(uniqueResultOne)
     }
+  }
+  addNewTransactions = newTransactions => {
+    const oldTx = this.state.transactions.map(t => ({
+      ...t,
+      new: false
+    }))
+    this.setState({
+      transactions: [...newTransactions, ...oldTx]
+    })
   }
   render() {
     const { transactions } = this.state

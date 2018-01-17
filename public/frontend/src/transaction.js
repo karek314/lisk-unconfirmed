@@ -2,6 +2,7 @@ import React from 'react'
 
 const Transaction = ({ data }) => (
   <tr>
+    <td>{data.new ? 'NEW' : 'OLD'}</td>
     <td>{data.id}</td>
     <td>{data.amount}</td>
     <td>{data.fee}</td>
