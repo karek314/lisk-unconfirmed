@@ -28,6 +28,7 @@ class App extends Component {
           ...t,
           new: true
         }))
+        .sort((a, b) => b.timestamp - a.timestamp)
       if (uniqueResultOne.length >= 1) this.addNewTransactions(uniqueResultOne)
     }
   }
