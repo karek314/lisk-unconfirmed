@@ -1,4 +1,4 @@
-import React, { Component } from 'react'
+import React, {Component} from 'react'
 import axios from 'axios'
 
 import Transaction from './transaction'
@@ -19,38 +19,29 @@ class App extends Component {
       'https://unconfirmed.liskstats.net/api/index.php'
     )
 
-    if (res.data.transactions.length >= 0) {
-      const uniqueResultOne = res.data.transactions
-        .filter(
-          obj => !this.state.transactions.some(obj2 => obj.id === obj2.id)
-        )
-        .map(t => ({
-          ...t,
-          new: true
-        }))
-        .sort((a, b) => b.timestamp - a.timestamp)
-      if (uniqueResultOne.length >= 1) this.addNewTransactions(uniqueResultOne)
-    }
-  }
-  addNewTransactions = newTransactions => {
-    const oldTx = this.state.transactions.map(t => ({
+    const unconfirmed = res.data.transactions.map(t => ({
       ...t,
-      new: false
+      unconfirmed: true
     }))
+
+    const oldTx = this.state.transactions
+      .filter(obj => !res.data.transactions.some(obj2 => obj.id === obj2.id))
+      .map(t => ({
+        ...t,
+        unconfirmed: false
+      }))
+
     this.setState({
-      transactions: [...newTransactions, ...oldTx]
+      transactions: [...unconfirmed, ...oldTx]
     })
   }
+
   render() {
-    const { transactions } = this.state
+    const {transactions} = this.state
     return (
       <div>
         <h1>Transactions</h1>
-        <table>
-          <tbody>
-            {transactions.map(t => <Transaction key={t.id} data={t} />)}
-          </tbody>
-        </table>
+        <ul>{transactions.map(t => <Transaction key={t.id} data={t} />)}</ul>
       </div>
     )
   }
