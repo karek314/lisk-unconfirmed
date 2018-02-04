@@ -1,4 +1,4 @@
-import React, {Component} from 'react'
+import React, { Component } from 'react'
 import axios from 'axios'
 import FlipMove from 'react-flip-move'
 
@@ -6,8 +6,8 @@ import Transaction from './components/transaction'
 import Header from './components/header'
 
 const enterAnimation = {
-  from: {opacity: 0, transform: 'scale(0.9) translateY(30px)'},
-  to: {opacity: 1, transform: 'scale(1)  translateY(0)'}
+  from: { opacity: 0, transform: 'scale(0.9) translateY(30px)' },
+  to: { opacity: 1, transform: 'scale(1)  translateY(0)' }
 }
 
 const easing = 'cubic-bezier(0.175, 0.885, 0.32, 1.275)'
@@ -46,11 +46,13 @@ class App extends Component {
   }
 
   render() {
-    const {transactions} = this.state
+    const { transactions } = this.state
     return (
       <div>
         <Header />
-        {transactions.length == 0 && <h5>Listening for transactions...</h5>}
+        {transactions.length === 0 && (
+          <h5 style={{ color: 'white' }}>Waiting for transactions...</h5>
+        )}
         <FlipMove
           staggerDurationBy="30"
           duration={500}

@@ -1,6 +1,6 @@
 import React from 'react'
-import styled, {keyframes} from 'styled-components'
-import {lighten, darken} from 'polished'
+import styled, { keyframes } from 'styled-components'
+import { lighten } from 'polished'
 import TimeAgo from 'react-timeago'
 
 const humanizeAmount = amount => amount / Math.pow(10, 8)
@@ -58,8 +58,8 @@ const LineWrapper = styled.div`
 `
 
 const Line = styled.div`
-  border: 1px solid #20df2e;
-  color: #20df2e;
+  border: 1px solid ${props => (props.type === 3 ? '#ffc107' : '#20df2e')};
+  color: ${props => (props.type === 3 ? '#ffc107' : '#20df2e')};
   width: 15px;
 `
 const ArrowLine = Line.extend`
@@ -95,6 +95,11 @@ const Amount = styled.div`
   color: white;
   background: #20df2e;
 `
+
+const Vote = styled(Amount)`
+  background: #ffc107;
+`
+
 const Address = styled.div`
   padding: 3px 6px;
   background: rgba(0, 0, 0, 0);
@@ -118,7 +123,7 @@ const Link = styled.a`
   color: inherit;
 `
 
-const Transaction = ({data}) => (
+const Transaction = ({ data }) => (
   <TransactionWrapper>
     <Header unconfirmed={data.unconfirmed}>
       <Link target="_blank" href={`https://explorer.lisk.io/tx/${data.id}`}>
@@ -136,18 +141,25 @@ const Transaction = ({data}) => (
         <Address>{data.senderId}</Address>
       </Link>
       <LineWrapper>
-        <Line />
+        <Line type={data.type} />
         <AmountWrapper>
-          <Amount>{humanizeAmount(data.amount)}</Amount>
+          {data.type === 0 && <Amount>{humanizeAmount(data.amount)}</Amount>}
+          {data.type === 3 && <Vote>Vote</Vote>}
         </AmountWrapper>
-        <ArrowLine />
+        {data.type === 0 && <ArrowLine />}
+        {data.type === 3 && <Line type={data.type} />}
       </LineWrapper>
-      <Link
-        target="_blank"
-        href={`https://explorer.lisk.io/address/${data.recipientId}`}
-      >
-        <Address>{data.recipientId}</Address>
-      </Link>
+      {data.type === 0 && (
+        <Link
+          target="_blank"
+          href={`https://explorer.lisk.io/address/${data.recipientId}`}
+        >
+          <Address>{data.recipientId}</Address>
+        </Link>
+      )}
+      {data.type === 3 && (
+        <Address>{data.asset.votes.length} delegates</Address>
+      )}
     </Content>
   </TransactionWrapper>
 )
