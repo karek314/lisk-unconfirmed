@@ -96,7 +96,7 @@ const Amount = styled.div`
   background: #20df2e;
 `
 
-const Vote = styled(Amount)`
+const TxText = styled(Amount)`
   background: #ffc107;
 `
 
@@ -144,10 +144,11 @@ const Transaction = ({ data }) => (
         <Line type={data.type} />
         <AmountWrapper>
           {data.type === 0 && <Amount>{humanizeAmount(data.amount)}</Amount>}
-          {data.type === 3 && <Vote>Vote</Vote>}
+          {data.type === 2 && <TxText>New Delegate</TxText>}
+          {data.type === 3 && <TxText>Vote</TxText>}
         </AmountWrapper>
         {data.type === 0 && <ArrowLine />}
-        {data.type === 3 && <Line type={data.type} />}
+        {(data.type === 2 || data.type === 3) && <Line type={data.type} />}
       </LineWrapper>
       {data.type === 0 && (
         <Link
@@ -157,6 +158,7 @@ const Transaction = ({ data }) => (
           <Address>{data.recipientId}</Address>
         </Link>
       )}
+      {data.type === 2 && <Address>{data.asset.delegate.username}</Address>}
       {data.type === 3 && (
         <Address>{data.asset.votes.length} delegates</Address>
       )}
