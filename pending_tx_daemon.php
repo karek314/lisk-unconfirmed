@@ -13,7 +13,7 @@ while (1) {
   //Save current pending tx
   $ptjson = GetPendingTx($server);
   $m->set('pending_tx', $ptjson, 3600*365);
-  $count = $ptjson['count'];
+  $count = $ptjson['meta']['count'];
   echo "\n[".$i."]Current tx pending: ".$count;
   csleep(1);
 }
