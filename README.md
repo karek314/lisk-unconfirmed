@@ -1,5 +1,7 @@
 # lisk-unconfirmed
 
+Development of lisk-unconfirmed discontinued for now.
+
 As of pre lisk core 1.0.0<br>
 Needs to use modified Lisk core node
 <pre>
